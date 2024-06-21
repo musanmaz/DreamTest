@@ -54,4 +54,14 @@ public class BasePage {
         WebElement element = findElement(elementName);
         element.click();
     }
+
+    public void seeElement(String elementName) {
+        findElement(elementName);
+    }
+
+    public void seeText(String text) {
+        if (!driver.getPageSource().contains(text)) {
+            throw new AssertionError("Text not found: " + text);
+        }
+    }
 }

@@ -4,8 +4,10 @@ import com.musanmaz.config.ConfigurationLoader;
 import com.musanmaz.drivers.DriverFactory;
 import com.musanmaz.pages.BasePage;
 import io.cucumber.java.After;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import io.cucumber.java.en_scouse.An;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Map;
@@ -33,6 +35,17 @@ public class StepDefinitions {
     public void clickOnElement(String elementName) {
         page.clickElement(elementName);
     }
+
+    @And("I see {string} element")
+    public void seeElement(String elementName) {
+        page.seeElement(elementName);
+    }
+
+    @And("I see {string} text")
+    public void seeText(String text) {
+        page.seeText(text);
+    }
+
 
     @After
     public void tearDown() {
