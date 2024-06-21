@@ -1,0 +1,5 @@
+{
+  "baseUrl": "https://google.com.tr",
+  "browser": "chrome",
+  "timeout": 30
+}
