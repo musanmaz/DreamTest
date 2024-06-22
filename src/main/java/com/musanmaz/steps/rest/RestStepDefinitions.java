@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.musanmaz.config.ConfigurationLoader;
 import com.musanmaz.utils.JsonUtils;
 import io.cucumber.java.en.*;
+import io.qameta.allure.Allure;
 import io.restassured.response.Response;
+
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,20 +27,23 @@ public class RestStepDefinitions {
 
         switch (method.toUpperCase()) {
             case "GET":
-                response = given().params(JsonUtils.getObjectField(requestConfig, "params")).when().get(baseUrl + endpoint);
+                Map<String, String> params = JsonUtils.convertJsonToMap(JsonUtils.getObjectField(requestConfig, "params"));
+                response = given().params(params).when().get(baseUrl + endpoint);
                 break;
             case "POST":
-                response = given().body(JsonUtils.getObjectField(requestConfig, "body")).when().post(baseUrl + endpoint);
+                response = given().body(JsonUtils.getObjectField(requestConfig, "body").toString()).when().post(baseUrl + endpoint);
                 break;
             case "PUT":
-                response = given().body(JsonUtils.getObjectField(requestConfig, "body")).when().put(baseUrl + endpoint);
+                response = given().body(JsonUtils.getObjectField(requestConfig, "body").toString()).when().put(baseUrl + endpoint);
                 break;
             case "DELETE":
-                response = given().body(JsonUtils.getObjectField(requestConfig, "body")).when().delete(baseUrl + endpoint);
+                response = given().body(JsonUtils.getObjectField(requestConfig, "body").toString()).when().delete(baseUrl + endpoint);
                 break;
             default:
                 throw new IllegalArgumentException("Unsupported method: " + method);
         }
+
+        Allure.addAttachment("Response Body", response.getBody().asString());
     }
 
     @Then("I see status code {int}")
@@ -47,6 +53,12 @@ public class RestStepDefinitions {
 
     @Then("I see response {string} field with value {string}")
     public void seeResponseFieldWithValue(String fieldName, String value) {
-        response.then().assertThat().body(fieldName, equalTo(value));
+        try {
+            response.then().assertThat().body(fieldName, equalTo(value));
+        } catch (AssertionError e) {
+            Allure.addAttachment("Response Body on Error", response.getBody().asString());
+            throw e;
+        }
+
     }
 }

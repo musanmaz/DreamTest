@@ -2,9 +2,12 @@ package com.musanmaz.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class JsonUtils {
@@ -28,7 +31,25 @@ public class JsonUtils {
         return jsonNode.get(fieldName).asText();
     }
 
-    public static Map<String, ?> getObjectField(JsonNode jsonNode, String fieldName) {
-        return jsonNode.get(fieldName);
+    public static JsonNode getObjectField(JsonNode jsonNode, String fieldName) {
+        JsonNode field = jsonNode.get(fieldName);
+        if (field == null || field.isNull()) {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.createObjectNode();
+        }
+        return field;
+    }
+
+    public static Map<String, String> convertJsonToMap(JsonNode jsonNode) {
+        Map<String, String> map = new HashMap<>();
+        if (jsonNode != null && jsonNode.isObject()) {
+            ObjectNode objectNode = (ObjectNode) jsonNode;
+            Iterator<Map.Entry<String, JsonNode>> fields = objectNode.fields();
+            while (fields.hasNext()) {
+                Map.Entry<String, JsonNode> field = fields.next();
+                map.put(field.getKey(), field.getValue().asText());
+            }
+        }
+        return map;
     }
 }

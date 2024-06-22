@@ -79,6 +79,15 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/allure-results</directory>
+                <targetPath>${project.build.directory}/allure-results</targetPath>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <!-- Allure Report Plugin -->
             <plugin>
