@@ -1,0 +1,32 @@
+{
+  "requests": {
+    "getTest": {
+      "endpoint": "/posts",
+      "method": "GET",
+      "params": {}
+    },
+    "postTest": {
+      "endpoint": "/posts",
+      "method": "POST",
+      "body": {
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      }
+    },
+    "putTest": {
+      "endpoint": "/posts/1",
+      "method": "PUT",
+      "body": {
+        "id": 1,
+        "title": "foo",
+        "body": "bar",
+        "userId": 1
+      }
+    },
+    "deleteTest": {
+      "endpoint": "/posts/1",
+      "method": "DELETE"
+    }
+  }
+}
