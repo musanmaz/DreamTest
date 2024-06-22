@@ -1,4 +1,4 @@
-package com.musanmaz.steps;
+package com.musanmaz.steps.web;
 
 import com.musanmaz.config.ConfigurationLoader;
 import com.musanmaz.drivers.DriverFactory;
@@ -7,12 +7,11 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import io.cucumber.java.en_scouse.An;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Map;
 
-public class StepDefinitions {
+public class WebStepDefinitions {
 
     private WebDriver driver;
     private BasePage page;
@@ -21,7 +20,7 @@ public class StepDefinitions {
     public void iOpenThePage(String pageName) {
         driver = DriverFactory.createDriver(ConfigurationLoader.getBrowser());
         page = new BasePage(driver, "src/main/resources/pages/" + pageName + ".json");
-        page.openPage(ConfigurationLoader.getBaseUrl());
+        page.openPage(ConfigurationLoader.getWebBaseUrl());
     }
 
     @When("I fill:")
